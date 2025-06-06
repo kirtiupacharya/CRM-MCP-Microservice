@@ -1,5 +1,28 @@
+const express = require('express');
+const router = express.Router();
+const fetch = require('node-fetch');
 const gatewayRepository = require('../repositories/GatewayRepository');
 const { v4: uuidv4 } = require('uuid');
+
+// Service configurations
+const services = {
+    contacts: {
+        url: process.env.CONTACTS_SERVICE_URL || 'http://localhost:3001',
+        health: '/health'
+    },
+    tickets: {
+        url: process.env.TICKETS_SERVICE_URL || 'http://localhost:3002',
+        health: '/health'
+    },
+    kb: {
+        url: process.env.KB_SERVICE_URL || 'http://localhost:3003',
+        health: '/health'
+    },
+    ai: {
+        url: process.env.AI_SERVICE_URL || 'http://localhost:3004',
+        health: '/health'
+    }
+};
 
 class GatewayController {
     async getAllServices(req, res) {

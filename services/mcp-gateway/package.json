@@ -1,19 +1,21 @@
 {
   "name": "mcp-gateway",
   "version": "1.0.0",
-  "description": "MCP Gateway service for CRM system",
+  "description": "MCP Gateway for CRM system",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js"
   },
   "dependencies": {
-    "axios": "^1.6.2",
-    "cors": "^2.8.5",
     "express": "^4.18.2",
-    "uuid": "^9.0.0"
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^2.7.0",
+    "axios": "^1.6.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.0.1"
   }
 } 

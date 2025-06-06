@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
-const axios = require('axios');
+const fetch = require('node-fetch');
 const ServiceConfig = require('../models/ServiceConfig');
 
 class GatewayRepository {
@@ -94,7 +94,6 @@ class GatewayRepository {
         const url = `${service.url}${path}`;
         const config = {
             method,
-            url,
             headers: {
                 'Content-Type': 'application/json',
                 ...headers
@@ -103,14 +102,17 @@ class GatewayRepository {
         };
 
         if (data) {
-            config.data = data;
+            config.body = JSON.stringify(data);
         }
 
         let lastError;
         for (let attempt = 0; attempt <= service.retryAttempts; attempt++) {
             try {
-                const response = await axios(config);
-                return response.data;
+                const response = await fetch(url, config);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
             } catch (error) {
                 lastError = error;
                 if (attempt < service.retryAttempts) {
@@ -128,7 +130,7 @@ class GatewayRepository {
         }
 
         try {
-            const response = await axios.get(`${service.url}${service.healthCheckEndpoint}`, {
+            const response = await fetch(`${service.url}${service.healthCheckEndpoint}`, {
                 timeout: service.timeout
             });
             return response.status === 200;
