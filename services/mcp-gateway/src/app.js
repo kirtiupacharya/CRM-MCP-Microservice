@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/gateway', gatewayRoutes);
+app.use('/api', gatewayRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
